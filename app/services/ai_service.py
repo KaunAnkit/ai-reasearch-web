@@ -13,42 +13,32 @@ MODEL_NAME = "openai/gpt-oss-20b"
 def generate_summary(text):
 
     prompt = f"""
-You are an academic research assistant.
+You are an academic research assistant. Your task is to provide a high-density, structured analysis of the research paper.
 
-Your task is to analyze the provided research paper text and return structured output.
+OUTPUT FORMATTING RULES:
+- The "summary" value must be formatted with Markdown for readability.
+- Use '###' for headers and '**' for bolding key terms.
+- Organize the "summary" string into these 4 sections: 
+  1. ### The Research Gap (What was missing?)
+  2. ### Methodology & Approach (How was it solved?)
+  3. ### Key Findings & Data (What were the results?)
+  4. ### Critical Limitations (What are the weaknesses?)
 
-IMPORTANT RULES:
-- Return ONLY valid JSON.
-- Do NOT include markdown.
-- Do NOT include explanations.
-- Do NOT include text before or after the JSON.
-- The response must be a single valid JSON object.
-- Do not use trailing commas.
-- All keys must match exactly as shown.
-- Always include exactly 5 flashcards.
+JSON SCHEMA RULES:
+- Return ONLY valid JSON. 
+- Do NOT include markdown code blocks (```json) in the raw output.
+- The "summary" must be one single string containing the headers mentioned above.
+- "key_concepts": 5-10 technical terms.
+- "flashcards": 5 pairs testing "Why" and "How".
 
 JSON SCHEMA:
-
 {{
-  "summary": "string",
-  "key_concepts": ["string", "string"],
-  "flashcards": [
-    {{
-      "question": "string",
-      "answer": "string"
-    }}
-  ]
+  "summary": "### **The Research Gap**\\n...\\n### **Methodology & Approach**\\n...",
+  "key_concepts": ["string"],
+  "flashcards": [{{ "question": "string", "answer": "string" }}]
 }}
 
-REQUIREMENTS:
-- "summary" must be concise (5–8 sentences).
-- "key_concepts" must contain 5–10 important technical concepts.
-- "flashcards" must contain exactly 5 question-answer pairs.
-- Questions must test understanding, not definitions only.
-- Answers must be clear and concise.
-
 Now analyze the following text:
-
 {text}
 """
 
@@ -57,7 +47,7 @@ Now analyze the following text:
         messages=[
             {"role": "user", "content": prompt}
         ],
-        temperature=0.3,
+        temperature=0.5,
     )
 
     raw = response.choices[0].message.content
@@ -76,32 +66,15 @@ Now analyze the following text:
 def generate_chunk_summary(text):
 
     prompt = f"""
-You are an academic research assistant.
+You are an academic research assistant. Extract the technical essence of this section.
 
-Your task is to analyze the provided research paper text chunk and return structured output 
-accoring to the chunk content.
-
-IMPORTANT RULES:
-- Return ONLY valid JSON.
-- Do NOT include markdown.
-- Do NOT include explanations.
-- Do NOT include text before or after the JSON.
-- The response must be a single valid JSON object.
-- Do not use trailing commas.
-
-
-JSON SCHEMA:
-
-{{
-  "summary": "string"
-}}
-
-REQUIREMENTS:
-- "summary" must be concise and to the point (6-10 sentences).
-- You are a strict JSON generator. You only output valid JSON.
+RULES:
+- Return ONLY a JSON object: {{ "summary": "string" }}
+- Inside the "summary" string, use **bolding** for any specific metrics, percentages, or tool names.
+- Use a bulleted format (starting with "-") within the string to separate different points found in this chunk.
+- The content must be dense and factual (6-10 sentences equivalent).
 
 Now analyze the following text:
-
 {text}
 """
 

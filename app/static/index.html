@@ -2,61 +2,25 @@
 <html>
 <head>
     <title>AI Research Web</title>
-</head>
+    <link rel="stylesheet" href="/static/style.css"> </head>
 <body>
 
-<h2>Upload PDF</h2>
+<div class="container">
+    <h2>AI Research Assistant</h2>
 
-<input type="file" id="pdfFile" accept="application/pdf">
-<button id="analyzeBtn">Analyze</button>
+    <div class="upload-section">
+        <input type="file" id="pdfFile" accept="application/pdf">
+        <button id="analyzeBtn">Analyze Document</button>
+    </div>
 
-<h3>Summary:</h3>
-<pre id="summaryText"></pre>
+    <h3>Summary</h3>
+    <pre id="summaryText"></pre>
 
-<script>
+    <h3>Flashcards</h3>
+    <div id="flashcardsContainer">
+        </div>
+</div>
 
-console.log("SCRIPT LOADED");
-
-document.getElementById("analyzeBtn").addEventListener("click", uploadPdf);
-
-async function uploadPdf() {
-
-    console.log("Button clicked");
-
-    const fileInput = document.getElementById("pdfFile");
-    const file = fileInput.files[0];
-
-    if (!file) {
-        alert("Select a file");
-        return;
-    }
-
-    const summaryElement = document.getElementById("summaryText");
-    summaryElement.innerText = "Processing...";
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-        const response = await fetch("/analyse", {
-            method: "POST",
-            body: formData
-        });
-
-        console.log("Status:", response.status);
-
-        const data = await response.json();
-        console.log("Data:", data);
-
-        summaryElement.innerText = data.summary || JSON.stringify(data, null, 2);
-
-    } catch (error) {
-        console.error(error);
-        summaryElement.innerText = "Error occurred";
-    }
-}
-
-</script>
-
+<script src="/static/script.js"></script>
 </body>
 </html>
