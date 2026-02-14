@@ -1,11 +1,7 @@
 from fastapi import FastAPI
-from app.api.routes import router
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-
-
-
-
+from app.api.routes import router
 
 app = FastAPI()
 
@@ -17,6 +13,8 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)  
+)
 
-app.mount("/static", StaticFiles(directory="app/static", html=True), name="static")
+@app.get("/")
+async def serve_index():
+    return FileResponse("app/static/index.html")

@@ -6,10 +6,6 @@ from app.models.response_models import output
 
 router = APIRouter()
 
-@router.get("/")
-async def root():
-    return {"message": "Hello World"}
-
 
 @router.post("/analyse")
 async def summary(file: UploadFile=File(...)):

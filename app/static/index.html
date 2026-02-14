@@ -5,22 +5,29 @@
 </head>
 <body>
 
+<h2>Upload PDF</h2>
+
 <input type="file" id="pdfFile" accept="application/pdf">
 <button id="analyzeBtn">Analyze</button>
 
-<h3>Summary :</h3>
+<h3>Summary:</h3>
 <pre id="summaryText"></pre>
 
 <script>
+
+console.log("SCRIPT LOADED");
+
 document.getElementById("analyzeBtn").addEventListener("click", uploadPdf);
 
 async function uploadPdf() {
+
+    console.log("Button clicked");
 
     const fileInput = document.getElementById("pdfFile");
     const file = fileInput.files[0];
 
     if (!file) {
-        alert("Select a file first.");
+        alert("Select a file");
         return;
     }
 
@@ -31,36 +38,25 @@ async function uploadPdf() {
     formData.append("file", file);
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/analyse", {
+        const response = await fetch("/analyse", {
             method: "POST",
             body: formData
         });
 
         console.log("Status:", response.status);
 
-        // 🔥 Do NOT use response.json() yet
-        const text = await response.text();
-        console.log("Raw response:", text);
+        const data = await response.json();
+        console.log("Data:", data);
 
-        try {
-            const data = JSON.parse(text);
-            console.log("Parsed JSON:", data);
-
-            summaryElement.innerText =
-                data.summary || JSON.stringify(data, null, 2);
-
-        } catch (jsonError) {
-            console.error("JSON parse error:", jsonError);
-            summaryElement.innerText = "Invalid JSON:\n" + text;
-        }
+        summaryElement.innerText = data.summary || JSON.stringify(data, null, 2);
 
     } catch (error) {
-        console.error("Fetch failed:", error);
-        summaryElement.innerText = "Network error.";
+        console.error(error);
+        summaryElement.innerText = "Error occurred";
     }
 }
-</script>
 
+</script>
 
 </body>
 </html>
