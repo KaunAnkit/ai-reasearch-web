@@ -1,4 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, UploadFile, File
+import shutil
+import os
 
 from app.models.response_models import output
 
@@ -9,6 +11,18 @@ async def root():
     return {"message": "Hello World"}
 
 
-@router.get("/summary")
-async def summary():
-    return output("cnn.pdf")
+@router.post("/analyse")
+async def summary(file: UploadFile=File(...)):
+
+    path = f"temp_{file.filename}"
+
+    with open(path,"wb") as buffer:
+        shutil.copyfileobj(file.file,buffer)
+    
+    temp = output(path)
+
+    os.remove(path)
+    return temp
+
+
+

@@ -1,2 +1,7 @@
-pymypdf
+pymupdf
 requests
+groq
+fastapi
+uvicorn
+python-multipart
+python-dotenv

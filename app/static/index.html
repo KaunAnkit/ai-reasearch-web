@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Research Web</title>
+</head>
+<body>
+
+<input type="file" id="pdfFile" accept="application/pdf">
+<button id="analyzeBtn">Analyze</button>
+
+<h3>Summary :</h3>
+<pre id="summaryText"></pre>
+
+<script>
+document.getElementById("analyzeBtn").addEventListener("click", uploadPdf);
+
+async function uploadPdf() {
+
+    const fileInput = document.getElementById("pdfFile");
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert("Select a file first.");
+        return;
+    }
+
+    const summaryElement = document.getElementById("summaryText");
+    summaryElement.innerText = "Processing...";
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/analyse", {
+            method: "POST",
+            body: formData
+        });
+
+        console.log("Status:", response.status);
+
+        // 🔥 Do NOT use response.json() yet
+        const text = await response.text();
+        console.log("Raw response:", text);
+
+        try {
+            const data = JSON.parse(text);
+            console.log("Parsed JSON:", data);
+
+            summaryElement.innerText =
+                data.summary || JSON.stringify(data, null, 2);
+
+        } catch (jsonError) {
+            console.error("JSON parse error:", jsonError);
+            summaryElement.innerText = "Invalid JSON:\n" + text;
+        }
+
+    } catch (error) {
+        console.error("Fetch failed:", error);
+        summaryElement.innerText = "Network error.";
+    }
+}
+</script>
+
+
+</body>
+</html>
