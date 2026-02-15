@@ -28,10 +28,10 @@ async function uploadPdf() {
 
         const data = await response.json();
 
-        // 1. Update Summary
+        
         summaryElement.innerText = data.summary || "No summary available.";
 
-        // 2. Render Flashcards if they exist
+        
         if (data.flashcards && data.flashcards.length > 0) {
             renderFlashcards(data.flashcards);
         }

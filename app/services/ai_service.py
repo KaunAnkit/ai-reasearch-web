@@ -33,7 +33,7 @@ JSON SCHEMA RULES:
 
 JSON SCHEMA:
 {{
-  "summary": "### **The Research Gap**\\n...\\n### **Methodology & Approach**\\n...",
+  "summary": "### **The Research Gap**\\n...\\n### **Methodology & Approach**   \\n...",
   "key_concepts": ["string"],
   "flashcards": [{{ "question": "string", "answer": "string" }}]
 }}
