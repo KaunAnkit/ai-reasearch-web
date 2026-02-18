@@ -28,7 +28,10 @@ def output(path):
 
     final_text = "\n\n".join(all_summaries)
 
-    return generate_summary(final_text)
+
+    data_dic = generate_summary(final_text)
+
+    return data_dic
 
     
 # print(output("cnn.pdf"))

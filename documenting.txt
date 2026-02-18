@@ -9,3 +9,12 @@ we will make a ard with question on clicking card will spin and answer will be s
 
 I am also thinking to seprate script .js to make html file or js file easy to debugg later 
  
+
+Date :- 18-02-2026
+
+review paper aur reasearch paper ko alag alag treat karenge 
+idk how ill make ai model diffrentiate btw them
+
+i changed the json format 
+and I have to change some frontend but i think it will give better response and help me make 
+a better product 

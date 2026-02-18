@@ -1,24 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AI Research Web</title>
-    <link rel="stylesheet" href="/static/style.css"> </head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parchment | Research Intelligence</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
 <body>
 
-<div class="container">
-    <h2>AI Research Assistant</h2>
-
-    <div class="upload-section">
-        <input type="file" id="pdfFile" accept="application/pdf">
-        <button id="analyzeBtn">Analyze Document</button>
-    </div>
-
-    <h3>Summary</h3>
-    <pre id="summaryText"></pre>
-
-    <h3>Flashcards</h3>
-    <div id="flashcardsContainer">
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon"></div>
+            <h1>Parchment</h1>
         </div>
+
+        <div class="upload-area">
+            <label for="pdfFile" class="drop-zone">
+                <div class="zone-content">
+                    <span id="fileNameDisplay">Select Document</span>
+                    <small>PDF format supported</small>
+                </div>
+                <input type="file" id="pdfFile" accept="application/pdf">
+            </label>
+            <button id="analyzeBtn">Analyze Document</button>
+        </div>
+
+        <nav class="sidebar-nav">
+            <p class="nav-label">Analysis</p>
+            <a href="#summary" class="nav-link active">Executive Summary</a>
+            <a href="#structural" class="nav-link">Structural Breakdown</a>
+            <a href="#flashcards" class="nav-link">Knowledge Cards</a>
+        </nav>
+
+        <div class="sidebar-meta">
+            <div class="engine-badge">Ankit Jha</div>
+        </div>
+    </aside>
+
+    <main class="stage">
+        <header class="stage-header">
+            <div class="breadcrumb">Workspace / <span id="currentDocName">New Research</span></div>
+            <div class="telemetry">
+                <div class="pill bronze">Tokens: <b id="tokens">0</b></div>
+                <div class="pill blue">Speed: <b id="speed">0s</b></div>
+                <div class="pill green">Confidence: <b>High</b></div>
+            </div>
+        </header>
+
+        <div class="scroller">
+            <section id="summary" class="surface hero-surface">
+                <div class="surface-tag">Executive Summary</div>
+                <h2 class="summary-thesis" id="thesisLine">Awaiting document analysis.</h2>
+                <div class="divider"></div>
+                <div class="summary-body" id="abstract">Upload a research paper to begin the structural extraction process.</div>
+            </section>
+
+            <div id="structural" class="bento-grid">
+                <div class="surface item-half">
+                    <div class="surface-tag">Background</div>
+                    <div class="content-small" id="background"></div>
+                </div>
+                <div class="surface item-half">
+                    <div class="surface-tag">Contributions</div>
+                    <div class="content-small" id="contributions"></div>
+                </div>
+                <div class="surface item-full">
+                    <div class="surface-tag">Methodology</div>
+                    <div class="content-normal" id="methodology"></div>
+                </div>
+                <div class="surface item-half">
+                    <div class="surface-tag">Key Results</div>
+                    <div class="content-small" id="key_results"></div>
+                </div>
+                <div class="surface item-half">
+                    <div class="surface-tag">Future Work</div>
+                    <div class="content-small" id="limitations_future_work"></div>
+                </div>
+            </div>
+
+            <section id="flashcards" class="flash-section">
+                <div class="section-title">
+                    <h3>Knowledge Flashcards</h3>
+                    <div class="status-pill">Active Recall Mode</div>
+                </div>
+                <div id="flashcardsContainer" class="flash-grid"></div>
+            </section>
+        </div>
+    </main>
 </div>
 
 <script src="/static/script.js"></script>
