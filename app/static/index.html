@@ -6,26 +6,29 @@
     <title>Parchment | Research Intelligence</title>
     <link rel="stylesheet" href="/static/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Betania+Patmos+In&family=Playwrite+AT:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="app-shell">
     <aside class="sidebar">
         <div class="brand">
-            <div class="brand-icon"></div>
             <h1>Parchment</h1>
         </div>
 
         <div class="upload-area">
-            <label for="pdfFile" class="drop-zone">
+            <div class="drop-zone" id="dropZone">
                 <div class="zone-content">
-                    <span id="fileNameDisplay">Select Document</span>
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                    </svg>
+                    <span id="fileNameDisplay">Drop manuscript or click</span>
                     <small>PDF format supported</small>
                 </div>
-                <input type="file" id="pdfFile" accept="application/pdf">
-            </label>
-            <button id="analyzeBtn">Analyze Document</button>
+                <input type="file" id="pdfFile" accept="application/pdf" hidden>
+            </div>
+            <button id="analyzeBtn" class="primary-btn">Analyze Document</button>
         </div>
 
         <nav class="sidebar-nav">
@@ -36,7 +39,8 @@
         </nav>
 
         <div class="sidebar-meta">
-            <div class="engine-badge">Ankit Jha</div>
+            <div class="model-badge">GPT-OSS-20B</div>
+            <div class="engine-status">Ankit Jha | System Ready</div>
         </div>
     </aside>
 
@@ -44,18 +48,18 @@
         <header class="stage-header">
             <div class="breadcrumb">Workspace / <span id="currentDocName">New Research</span></div>
             <div class="telemetry">
-                <div class="pill bronze">Tokens: <b id="tokens">0</b></div>
-                <div class="pill blue">Speed: <b id="speed">0s</b></div>
+                <div class="pill bronze">OSS-20B</div>
+                <div class="pill blue">Latency: <b id="speed">0s</b></div>
                 <div class="pill green">Confidence: <b>High</b></div>
             </div>
         </header>
 
         <div class="scroller">
             <section id="summary" class="surface hero-surface">
-                <div class="surface-tag">Executive Summary</div>
-                <h2 class="summary-thesis" id="thesisLine">Awaiting document analysis.</h2>
+                <div class="surface-tag">Inference Result</div>
+                <h2 class="summary-thesis" id="thesisLine">Awaiting manuscript input.</h2>
                 <div class="divider"></div>
-                <div class="summary-body" id="abstract">Upload a research paper to begin the structural extraction process.</div>
+                <div class="summary-body" id="abstract">Upload a research paper to begin the structural extraction pipeline.</div>
             </section>
 
             <div id="structural" class="bento-grid">
