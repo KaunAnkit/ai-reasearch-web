@@ -29,4 +29,4 @@ big papers can be analysed now but in 10 Freaking MINUTES its trash
 i reasearch little bit now probably gonna make a vector db and RAG thing but idk what these things are 
 gonna spend some time reasearching and learning and trying to implimnet these things 
 
-i though i was near but the product is bit far away 
+i though i was near but the product is bit far away.
