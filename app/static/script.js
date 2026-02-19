@@ -4,6 +4,7 @@ const fileNameDisplay = document.getElementById('fileNameDisplay');
 const analyzeBtn = document.getElementById('analyzeBtn');
 const currentDocName = document.getElementById('currentDocName');
 
+// --- File Selection Logic ---
 dropZone.addEventListener('click', () => fileInput.click());
 
 fileInput.addEventListener('change', (e) => {
@@ -19,6 +20,7 @@ fileInput.addEventListener('change', (e) => {
     }
 });
 
+// Drag and Drop support
 dropZone.addEventListener('dragover', (e) => {
     e.preventDefault();
     dropZone.style.borderColor = 'var(--accent-blue)';
@@ -37,6 +39,7 @@ dropZone.addEventListener('drop', (e) => {
     }
 });
 
+// --- Analysis Execution ---
 analyzeBtn.addEventListener('click', performAnalysis);
 
 async function performAnalysis() {
@@ -71,6 +74,7 @@ async function performAnalysis() {
         const tokenElement = document.getElementById("tokens");
         if (tokenElement) tokenElement.textContent = data.tokens || "2,140"; 
 
+        // Update Text Content
         thesis.textContent = data.abstract ? data.abstract.split('.')[0] + '.' : "Analysis complete.";
         abstract.textContent = data.abstract || "Detailed summary unavailable.";
 
@@ -94,6 +98,15 @@ async function performAnalysis() {
             }
         }
 
+        // --- NEW: Handle Image Gallery ---
+        if (data.images && data.images.length > 0) {
+            renderGallery(data.images);
+        } else {
+            const gallerySection = document.getElementById("gallery");
+            if(gallerySection) gallerySection.style.display = "none";
+        }
+
+        // Handle Flashcards
         if (data.flashcards) {
             renderCards(data.flashcards);
         }
@@ -108,8 +121,34 @@ async function performAnalysis() {
     }
 }
 
+// --- Rendering Functions ---
+
+function renderGallery(images) {
+    const gallerySection = document.getElementById("gallery");
+    const container = document.getElementById("imageGallery");
+    
+    if (!gallerySection || !container) return;
+
+    gallerySection.style.display = "block";
+    container.innerHTML = ""; // Clear old images
+
+    images.forEach(img => {
+        const figure = document.createElement("div");
+        figure.className = "research-figure";
+        figure.innerHTML = `
+            <div class="figure-wrapper">
+                <img src="${img.image_url}" alt="${img.caption}" onerror="this.src='https://via.placeholder.com/300x200?text=Diagram+Unavailable'">
+            </div>
+            <p class="figure-caption">${img.caption}</p>
+        `;
+        container.appendChild(figure);
+    });
+}
+
 function renderCards(cards) {
     const container = document.getElementById("flashcardsContainer");
+    if(!container) return;
+    
     container.innerHTML = "";
     
     cards.forEach(c => {

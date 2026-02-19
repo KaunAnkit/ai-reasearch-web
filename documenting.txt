@@ -18,3 +18,8 @@ idk how ill make ai model diffrentiate btw them
 i changed the json format 
 and I have to change some frontend but i think it will give better response and help me make 
 a better product 
+
+Date :- 19-02-2026
+
+I have to still figure out hot to get images graphs and tabels out of the paper and display 
+them with caption 

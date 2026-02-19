@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-MODEL_NAME = "openai/gpt-oss-20b"
+MODEL_NAME = "meta-llama/llama-4-scout-17b-16e-instruct"
+
 
 
 
@@ -95,14 +96,17 @@ Analyze the following paper text:
 
 def generate_chunk_summary(text):
 
-    prompt = f"""
+    prompt =   f"""
 You are an academic research assistant.
 
 STRICT RULES:
 - Return ONLY valid JSON.
 - Do NOT include markdown code blocks.
-- Never use backslashes (\\).
+- Do NOT include markdown code blocks (no ```json).
+- Double-escape all backslashes for JSON compatibility (e.g., \\n or \\section).
 - Output must follow this schema exactly:
+- Max 4 bullet points
+- Each bullet ≤ 15 words
 
 {{ "summary": "string" }}
 
@@ -112,6 +116,7 @@ Inside the summary:
 - Dense, factual, technical
 
 Analyze:
+Text:
 {text}
 """
 

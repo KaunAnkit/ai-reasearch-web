@@ -1,22 +1,19 @@
-def para_text_chunker(text):
+def para_text_chunker(text, max_chars=600):
 
-    chunk = []
+    chunks = []
 
-    stop_chunk = text.split("\n\n")
-    empty_string = ""
-        
-    for x in stop_chunk:
-
-        if len(empty_string) + len(x) <= 6000:
-            empty_string += x + "\n\n"
-        
-        else:
     
-            if empty_string:
-                chunk.append(empty_string.strip())
-            empty_string = x + "\n\n"
+    paragraphs = text.split("\n\n")
 
+    for para in paragraphs:
 
-    if empty_string:
-        chunk.append(empty_string.strip())
-    return chunk
+        
+        if len(para) <= max_chars:
+            chunks.append(para.strip())
+
+        else:
+            
+            for i in range(0, len(para), max_chars):
+                chunks.append(para[i:i+max_chars].strip())
+
+    return chunks
