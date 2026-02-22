@@ -1,4 +1,4 @@
-def para_text_chunker(text, max_chars=600):
+def para_text_chunker(text, max_chars=4000):
 
     chunks = []
 

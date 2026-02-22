@@ -1,12 +1,12 @@
 import os
 import re
 import json
-from groq import Groq
+from groq import AsyncGroq
 from dotenv import load_dotenv
 
 load_dotenv()
 
-client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+client = AsyncGroq(api_key=os.getenv("GROQ_API_KEY"))
 MODEL_NAME = "meta-llama/llama-4-scout-17b-16e-instruct"
 
 
@@ -19,6 +19,7 @@ def safe_json_load(raw: str):
     
     raw = re.sub(r"^```.*?\n|```$", "", raw, flags=re.DOTALL).strip()
 
+    raw = raw.replace("\\ ", " ").replace("\\\n", " ")
     
     match = re.search(r"\{.*\}", raw, re.DOTALL)
     if not match:
@@ -27,14 +28,14 @@ def safe_json_load(raw: str):
     json_str = match.group(0)
 
     
-    json_str = json_str.encode("utf-8", "backslashreplace").decode("utf-8")
+    json_str = re.sub(r"[\x00-\x1F\x7F]", " ", json_str)
 
     return json.loads(json_str)
 
 
 
 
-def generate_summary(text):
+async def generate_summary(text):
 
     fallback_data = {
         "abstract": "Failed to parse summary.",
@@ -75,7 +76,7 @@ Analyze the following paper text:
 {text}
 """
 
-    response = client.chat.completions.create(
+    response = await client.chat.completions.create(
         model=MODEL_NAME,
         messages=[{"role": "user", "content": prompt}],
         temperature=0.5,
@@ -94,7 +95,7 @@ Analyze the following paper text:
         return fallback_data
 
 
-def generate_chunk_summary(text):
+async def generate_chunk_summary(text):
 
     prompt =   f"""
 You are an academic research assistant.
@@ -107,6 +108,8 @@ STRICT RULES:
 - Output must follow this schema exactly:
 - Max 4 bullet points
 - Each bullet ≤ 15 words
+- The value of "summary" must be a single STRING, not a list.
+- Use \n for newlines within the string.
 
 {{ "summary": "string" }}
 
@@ -120,7 +123,7 @@ Text:
 {text}
 """
 
-    response = client.chat.completions.create(
+    response = await client.chat.completions.create(
         model=MODEL_NAME,
         messages=[{"role": "user", "content": prompt}],
         temperature=0.3,

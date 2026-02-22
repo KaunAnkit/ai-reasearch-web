@@ -15,7 +15,7 @@ async def summary(file: UploadFile=File(...)):
     with open(path,"wb") as buffer:
         shutil.copyfileobj(file.file,buffer)
     
-    temp = output(path)
+    temp =  await output(path)
 
     os.remove(path)
     return temp

@@ -13,3 +13,6 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 async def serve_index():
     return FileResponse("app/static/index.html")
 
+
+    
+130912
