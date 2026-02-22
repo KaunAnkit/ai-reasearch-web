@@ -121,7 +121,7 @@ async function performAnalysis() {
     }
 }
 
-// --- Rendering Functions ---
+
 
 function renderGallery(images) {
     const gallerySection = document.getElementById("gallery");
@@ -130,7 +130,7 @@ function renderGallery(images) {
     if (!gallerySection || !container) return;
 
     gallerySection.style.display = "block";
-    container.innerHTML = ""; // Clear old images
+    container.innerHTML = ""; 
 
     images.forEach(img => {
         const figure = document.createElement("div");
@@ -167,4 +167,44 @@ function renderCards(cards) {
         el.onclick = () => el.classList.toggle("flipped");
         container.appendChild(el);
     });
+}
+
+
+function renderGallery(images) {
+    const gallerySection = document.getElementById("gallery");
+    const container = document.getElementById("imageGallery");
+    
+    if (!gallerySection || !container) return;
+
+    gallerySection.style.display = "block";
+    container.innerHTML = ""; 
+
+    images.forEach(img => {
+        const figure = document.createElement("div");
+        figure.className = "research-figure";
+        
+        
+        figure.innerHTML = `
+            <div class="figure-wrapper" onclick="zoomImage('${img.image_url}', '${img.caption}')">
+                <img src="${img.image_url}" alt="${img.caption}" onerror="this.src='https://via.placeholder.com/300x200?text=Diagram+Unavailable'">
+            </div>
+            <p class="figure-caption">${img.caption}</p>
+        `;
+        container.appendChild(figure);
+    });
+}
+
+// --- Zoom Modal Logic ---
+function zoomImage(url, caption) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('imgFullSize');
+    const modalCap = document.getElementById('modalCaption');
+
+    modalImg.src = url;
+    modalCap.textContent = caption;
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('imageModal').style.display = 'none';
 }

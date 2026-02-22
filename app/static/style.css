@@ -276,3 +276,56 @@ body {
     background: var(--border);
     border-radius: 10px;
 }
+
+/* Modal Overlay */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(43, 42, 40, 0.95); /* Using your text-primary color */
+    z-index: 9999;
+    cursor: zoom-out;
+    padding: 40px;
+    backdrop-filter: blur(8px);
+}
+
+.modal-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.modal-img {
+    max-width: 95%;
+    max-height: 80vh;
+    border-radius: 8px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transform: scale(0.9);
+    animation: zoomEffect 0.3s forwards cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.modal-caption {
+    margin-top: 24px;
+    color: var(--bg-stage);
+    font-family: var(--mono-font);
+    font-size: 14px;
+}
+
+@keyframes zoomEffect {
+    to { transform: scale(1); }
+}
+
+/* Update your existing research-figure img to show it's clickable */
+.figure-wrapper img {
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+}
+
+.figure-wrapper img:hover {
+    transform: scale(1.02);
+}
